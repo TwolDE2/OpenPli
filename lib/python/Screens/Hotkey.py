@@ -229,6 +229,7 @@ def getHotkeyFunctions():
 	for plugin in plugins.getPluginsForMenu("gui"):
 		if plugin[2]:
 			hotkey.functions.append((plugin[0], "MenuPlugin/gui/" + plugin[2], "Setup"))
+	hotkey.functions.append((_("Skin Selection"), "Module/Screens.SkinSelector/SkinSelector", "Setup"))
 	hotkey.functions.append((_("PowerMenu"), "Menu/shutdown", "Power"))
 	hotkey.functions.append((_("Standby"), "Module/Screens.Standby/Standby", "Power"))
 	hotkey.functions.append((_("Restart"), "Module/Screens.Standby/TryQuitMainloop/2", "Power"))
@@ -723,12 +724,9 @@ class InfoBarHotkey:
 				from Screens.Menu import MainMenu, mdom
 				root = mdom.getroot()
 				for x in root.findall("menu"):
-					y = x.find("id")
-					if y is not None:
-						id = y.get("val")
-						if id and id == selected[1]:
-							menu_screen = self.session.open(MainMenu, x)
-							break
+					if x.get("key") == selected[1]:
+						menu_screen = self.session.open(MainMenu, x)
+						break
 
 	def showServiceListOrMovies(self):
 		if hasattr(self, "openServiceList"):
